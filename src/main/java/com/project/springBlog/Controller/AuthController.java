@@ -1,7 +1,8 @@
-package Controller;
+package com.project.springBlog.Controller;
 
-import Service.AuthService;
-import dto.RegisterRequest;
+import com.project.springBlog.Service.AuthService;
+import com.project.springBlog.dto.LoginRequest;
+import com.project.springBlog.dto.RegisterRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,5 +22,10 @@ public class AuthController {
     public ResponseEntity<String> signUp(@RequestBody RegisterRequest registerRequest){
         authService.signup(registerRequest);
         return new ResponseEntity<>("User SigneUp Successfully",HttpStatus.OK);
+    }
+
+    @PostMapping("/login")
+    public String login(@RequestBody LoginRequest loginRequest){
+        authService.login(loginRequest);
     }
 }

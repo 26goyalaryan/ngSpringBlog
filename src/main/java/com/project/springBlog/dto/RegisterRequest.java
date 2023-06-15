@@ -1,4 +1,4 @@
-package dto;
+package com.project.springBlog.dto;
 
 public class RegisterRequest {
     private String username;
