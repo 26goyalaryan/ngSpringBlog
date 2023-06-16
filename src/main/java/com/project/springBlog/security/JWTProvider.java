@@ -1,6 +1,7 @@
 package com.project.springBlog.security;
 
 import com.project.springBlog.model.User;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -24,6 +25,15 @@ public class JWTProvider {
     public String generateToken(Authentication authentication){
         User principal = (User) authentication.getPrincipal();
         return Jwts.builder().setSubject(principal.getUserName()).signWith(secretKey).compact();
+    }
+    public boolean validateToken(String jwt){
+        Jwts.parser().setSigningKey(secretKey).parseClaimsJwt(jwt);
+        return true;
+    }
+
+    public String getUsernameFromJWT(String token) {
+        Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJwt(token).getBody();
+        return claims.getSubject();
     }
 }
 /*

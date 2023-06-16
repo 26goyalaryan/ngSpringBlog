@@ -1,4 +1,5 @@
 package com.project.springBlog.config;
+import com.project.springBlog.security.JWTAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 //  The @EnableWebSecurity annotation on the class indicates that this configuration will be used to enable Spring Security in the application.
 @EnableWebSecurity
@@ -23,6 +25,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
+    }
+
+    @Bean
+    public JWTAuthenticationFilter jwtAuthenticationFilter(){
+        return new JWTAuthenticationFilter();
     }
     /*
 
@@ -37,6 +44,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/api/auth/**").permitAll()
                 .anyRequest().authenticated();
+        httpSecurity.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        /*
+        * By using addFilterBefore, you're instructing Spring Security to add your custom JWT authentication filter
+        *  before the UsernamePasswordAuthenticationFilter in the filter chain.
+        *  This allows your filter to be executed first and handle JWT-based authentication before the standard username/password authentication process.
+        * */
     }
 
     @Autowired

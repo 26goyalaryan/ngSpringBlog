@@ -1,4 +1,4 @@
-package com.project.springBlog.Controller;
+package com.project.springBlog.Repository.Controller;
 
 import com.project.springBlog.Service.AuthService;
 import com.project.springBlog.dto.LoginRequest;
@@ -26,6 +26,6 @@ public class AuthController {
 
     @PostMapping("/login")
     public String login(@RequestBody LoginRequest loginRequest){
-        authService.login(loginRequest);
+        return authService.login(loginRequest);
     }
 }
